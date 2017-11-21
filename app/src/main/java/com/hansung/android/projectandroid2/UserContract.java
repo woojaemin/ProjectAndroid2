@@ -21,11 +21,11 @@ public class UserContract {
         public static final String KEY_NAME = "Name";
         public static final String KEY_ADDRESS = "ADDRESS";
         public static final String KEY_PHONE = "PHONE";
-        public static final String KEY_PICTURE = "image"; //사진 스트링 말고...
+        public static final String KEY_PICTURE = "image";
 
         public static final String CREATE_TABLE = "CREATE TABLE " + TABLE_NAME +
                 " (" +
-                _ID + " INTEGER PRIMARY KEY" + COMMA_SEP +    //ID가 굳이 필요할까??
+                _ID + " INTEGER PRIMARY KEY" + COMMA_SEP +
                 KEY_NAME + TEXT_TYPE + COMMA_SEP +
                 KEY_ADDRESS + TEXT_TYPE + COMMA_SEP +
                 KEY_PHONE + TEXT_TYPE + COMMA_SEP +

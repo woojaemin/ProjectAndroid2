@@ -100,7 +100,7 @@ public class AddMenu extends AppCompatActivity {
             StoreImg = mPhotoFile.getAbsolutePath();
 
             if (mPhotoFile != null) {
-                Uri imageUri = FileProvider.getUriForFile(this, "com.example.jhim0.project1_new", mPhotoFile);
+                Uri imageUri = FileProvider.getUriForFile(this, "com.hansung.android.projectandroid2", mPhotoFile);
 
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
                 startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);

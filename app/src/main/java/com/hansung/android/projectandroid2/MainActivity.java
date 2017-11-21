@@ -54,8 +54,6 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnTi
         return super.onCreateOptionsMenu(menu);
     }
 
-
-    //item선택됬을때 --> 상단 메뉴
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

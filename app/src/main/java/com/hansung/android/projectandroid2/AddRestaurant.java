@@ -11,7 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -80,10 +79,6 @@ public class AddRestaurant extends AppCompatActivity{
         long nOfRows = mDBHelper.insertUserByMethod(name.getText().toString(), address.getText().toString(), phone.getText().toString(), StoreImg  );   //이미지 받아오는것 확인 / 수정!!!
 
 
-
-        Log.v("Textadfsdf", String.valueOf(name));
-        //Log.v("Textadfsdf", String.valueOf(picture));
-
         if (nOfRows > 0)
             Toast.makeText(this, "맛집이 등록되었습니다.", Toast.LENGTH_SHORT).show();
         else
@@ -137,8 +132,7 @@ public class AddRestaurant extends AppCompatActivity{
 
             if (mPhotoFile != null) {
                 //2. 생성된 파일 객체에 대한 Uri 객체를 얻기
-                Uri imageUri = FileProvider.getUriForFile(this,
-                        "com.example.jhim0.project1_new", mPhotoFile);
+                Uri imageUri = FileProvider.getUriForFile(this, "com.hansung.android.projectandroid2", mPhotoFile);
 
                 //3. Uri 객체를 Extras를 통해 카메라 앱으로 전달
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,imageUri);
@@ -149,10 +143,7 @@ public class AddRestaurant extends AppCompatActivity{
 
         }
     }
-    //////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
 
-    //==================================촬영한 데이터 보야주기==================================
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
         //촬영한 사진 화면에 나타내기
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
@@ -169,11 +160,6 @@ public class AddRestaurant extends AppCompatActivity{
     }
 
 
-
-
-
-
-    //날짜, 시간 나타내는 함수
     private String currentDateFormat(){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HH_mm_ss");
         String  currentTimeStamp = dateFormat.format(new Date());
