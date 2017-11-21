@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:name="com.hansung.android.projectandroid2"
+        android:name="com.hansung.android.projectandroid2.MainFragment"
         android:layout_width="0px"
         android:layout_height="match_parent"
         android:id="@+id/titles"
