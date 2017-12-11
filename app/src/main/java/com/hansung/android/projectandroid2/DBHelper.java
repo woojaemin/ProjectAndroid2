@@ -32,8 +32,7 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    //데이터베이스에 정보삽입
-    public long insertUserByMethod(String name, String address, String phone, String picture) {     //picture 스트링 말고
+    public long insertUserByMethod(String name, String address, String phone, String picture) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(UserContract.Users.KEY_NAME, name);

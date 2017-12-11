@@ -38,7 +38,7 @@ public class AddRestaurant extends AppCompatActivity{
         setContentView(R.layout.activity_addrestaurantactivity);
 
         mDBHelpers = new DBHelper2(this);
-        mDBHelpers.deleteUserByMethod2();
+//        mDBHelpers.deleteUserByMethod2();
 
         //외부 저장소 권한 사용 Permission
         checkDangerousPermissions();
@@ -59,15 +59,13 @@ public class AddRestaurant extends AppCompatActivity{
         erollmentBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent_MainActivity = new Intent(getApplicationContext(), MainActivity.class);
+                Intent goMaps = new Intent(getApplicationContext(), MapActivity.class);
 
                 insertRecord();
 
-                startActivity(intent_MainActivity);
+                startActivity(goMaps);
             }
         });
-
-
     }
 
     private void insertRecord() {                          //레코드 추가 삽입 가능
@@ -97,8 +95,7 @@ public class AddRestaurant extends AppCompatActivity{
     final int REQUEST_EXTERNAL_STORAGE_FOR_MULTIMEDIA = 0;
     //권한 검사 및 요청
     public void checkDangerousPermissions() {
-        String[] permissions = { // 이 3개는 선언되있지 않으면 앱이 비정상 종료될수 있기 떄문에
-                // 굉장히  dagerous한 권한들임임 반면에 인터넷 권한은 그렇게 중요한 권한은 아님
+        String[] permissions = {
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE
         };
@@ -116,12 +113,7 @@ public class AddRestaurant extends AppCompatActivity{
 
         }
     }
-    //////////////////////////////////////////////////////////////////////
-    //////////////////////////////////////////////////////////////////////
-
-
-    //============================카메라 앱에 들어가서 사진 촬영=======================
-    private void dispatchTakePictureIntent() {
+   private void dispatchTakePictureIntent() {
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -148,6 +140,7 @@ public class AddRestaurant extends AppCompatActivity{
         //촬영한 사진 화면에 나타내기
         if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK){
             if (mPhotoFileName != null){
+
                 mPhotoFile = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES), mPhotoFileName);
                 Uri uri = Uri.fromFile(mPhotoFile);
                 ImageButton imageButton = (ImageButton)findViewById(R.id.imageButton);

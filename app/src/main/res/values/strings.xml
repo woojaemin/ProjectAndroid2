@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ProjectAndroid2</string>
+    <string name="no_location_detected">No Location Detected</string>
 </resources>
