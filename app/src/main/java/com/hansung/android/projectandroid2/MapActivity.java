@@ -37,20 +37,26 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
-    private FusedLocationProviderClient mFusedLocationClient;
+    // 지도에 표시된 마커 객체를 가지고 있을 배열입니다
+    ArrayList<MarkerOptions> markers = new ArrayList<MarkerOptions>();
+
+    public LatLng curLocation; // 현재 위치를 여기다 저장
+
+    private FusedLocationProviderClient mFusedLocationClient; // 마지막 위치를 얻기위해 사용함
     private Location mCurrentLocation;
-    GoogleMap mGoogleMap = null;
+    GoogleMap mGoogleMap = null;  // 구글맵을 사용하기 위해
 
     String test;
     int rad = 1000;
 
     public DBHelper mapDBHelper;
-
+    Cursor stores;
     final private int REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION = 0;
 
     @Override
@@ -60,7 +66,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
         mapDBHelper = new DBHelper(this);
 
-        Cursor stores = mapDBHelper.getAllUsersBySQL();
+        //Cursor stores = mapDBHelper.getAllUsersBySQL();
+
+
 
 //        test = stores.getString(1);
 //
@@ -77,8 +85,11 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         } else{
             getLastLocation();
         }
+
+        //SupportMapFragment를 사용함으로 맵을 R.id.maps에 띄운다.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.maps);
+
         mapFragment.getMapAsync(this);
 
         Button Find = (Button)findViewById(R.id.button);
@@ -91,6 +102,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    //메뉴 설정
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -99,33 +111,128 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return super.onCreateOptionsMenu(menu);
 
     }
+//로케이션 클래스에 디스턴스 메소드
 
+     //메뉴 선택 됐을 때
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+//        Location location;
+//        location.distanceTo()
 
         switch (item.getItemId()) {
-
             case R.id.kilo_one:
+                mGoogleMap.clear();
                 item.setChecked(true);
                 test = "one";
                 rad = 1000;
-               getLastLocation();
-               Log.v("test","1");
+                getLastLocation(); // 현재 위치로
+                // 반경 1KM원
+                CircleOptions circle1KM = new CircleOptions().center(curLocation) //원점
+                        .radius(1000)      //반지름 단위 : m
+                        .strokeWidth(2f)  //선너비 0f : 선없음
+                        .fillColor(Color.parseColor("#00000000")); //배경색
+                mGoogleMap.addCircle(circle1KM);
+                Log.v("test","1");
+
+
+                MarkerOptions mar1;
+                double x1, y1, dis1;
+                for (int m=0; m<markers.size(); m++){
+                    mar1 = markers.get(m);
+                    //markers.get(m)
+                    x1 = mar1.getPosition().latitude;
+                    y1 = mar1.getPosition().longitude;
+                    dis1 = Double.parseDouble(getDistance(x1, y1));
+                    Log.i("dis", String.valueOf(dis1));
+                    if (dis1 <= 1000){
+                        mGoogleMap.addMarker(mar1);
+                    }
+
+                    mar1 = null;
+                }
+
+
+
+               break;
 
             case R.id.kilo_two:
+                mGoogleMap.clear();
                 item.setChecked(true);
                 test="two";
                 rad = 2000;
-                getLastLocation();
+                //getLastLocation(2);
+                getLastLocation(); // 현재 위치로
+                // 반경 1KM원
+                CircleOptions circle2KM = new CircleOptions().center(curLocation) //원점
+                        .radius(2000)      //반지름 단위 : m
+                        .strokeWidth(2f)  //선너비 0f : 선없음
+                        .fillColor(Color.parseColor("#00000000")); //배경색
+                mGoogleMap.addCircle(circle2KM);
+
+
+
+
+                MarkerOptions mar2;
+                double x2, y2, dis2;
+                for (int m=0; m<markers.size(); m++){
+                    mar2 = markers.get(m);
+                    //markers.get(m)
+                    x2 = mar2.getPosition().latitude;
+                    y2 = mar2.getPosition().longitude;
+                    dis2 = Double.parseDouble(getDistance(x2, y2));
+                    Log.i("dis", String.valueOf(dis2));
+
+                    if (dis2 <= 2000){
+                        mGoogleMap.addMarker(mar2);
+                    }
+
+                    mar2 = null;
+                }
+
+
+
+
+                break;
 
             case R.id.kilo_three:
+                mGoogleMap.clear();
                 item.setChecked(true);
                 test="three";
                 rad = 3000;
+                //getLastLocation(3);
                 getLastLocation();
+                // 반경 1KM원
+                CircleOptions circle3KM = new CircleOptions().center(curLocation) //원점
+                        .radius(3000)      //반지름 단위 : m
+                        .strokeWidth(2f)  //선너비 0f : 선없음
+                        .fillColor(Color.parseColor("#00000000")); //배경색
+                mGoogleMap.addCircle(circle3KM);
+
+
+                MarkerOptions mar3;
+                double x3, y3, dis3;
+                for (int m=0; m<markers.size(); m++){
+                    mar3 = markers.get(m);
+                    //markers.get(m)
+                    x3 = mar3.getPosition().latitude;
+                    y3 = mar3.getPosition().longitude;
+                    dis3 = Double.parseDouble(getDistance(x3, y3));
+                    Log.i("dis", String.valueOf(dis3));
+                    if (dis3 <= 3000){
+                        mGoogleMap.addMarker(mar3);
+                    }
+
+                    mar3 = null;
+                }
+
+
+
+                break;
 
             case R.id.action_icon:
+                //getLastLocation(0);
                 getLastLocation();
+                break;
         }
         return false;
 
@@ -147,41 +254,119 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         );
     }
 
+
+    // 현재 위치와 거리 차이 구하는 함수
+    public String getDistance(double gps1, double gps2){
+        String distance;
+
+        Location locationA = new Location("point A");
+        locationA.setLatitude(gps1);
+        locationA.setLongitude(gps2);
+        Log.i("test2", String.valueOf(gps1));
+        Log.i("test2", String.valueOf(gps2));
+
+        Location locationB = new Location("point B");
+        locationB.setLatitude(mCurrentLocation.getLatitude());
+        locationB.setLongitude(mCurrentLocation.getLongitude());
+        Log.i("test2", String.valueOf(mCurrentLocation.getLatitude()));
+        Log.i("test2", String.valueOf(mCurrentLocation.getLongitude()));
+        distance = Double.toString(locationB.distanceTo(locationA));
+
+        Log.i("test2", String.valueOf(distance));
+        return distance;
+    }
+
+
+
+    //ViewStores에서
+    public void ViewStores() {
+
+        stores = mapDBHelper.getAllUsersBySQL();
+
+        stores.moveToFirst();
+
+        while(stores.moveToNext()) {
+
+        String Names = stores.getString(1);
+        String input = stores.getString(2);
+
+        Log.v("t1", Names);
+        Log.v("t1", input);
+
+        double Lati;
+        double Longti;
+
+        try {
+            Geocoder geocoder = new Geocoder(this, Locale.KOREA); // 주소를 위치로, 위치를 주소로 반환해주기 위해 사용
+            List<Address> addresses = geocoder.getFromLocationName(input, 1);
+            //주소로 위치를 얻기위한 address 배열
+
+            // 주소를 위치로 반환해주는 코드
+            if (addresses.size() > 0) { // address 배열의 크기가 0보다 크면
+                Address bestResult = (Address) addresses.get(0); // 어드레스 배열의 첫번째 어드레스 위치를 bestResult 라고한다.
+                //이부분 수정 필요
+                //////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+                Lati = bestResult.getLatitude();
+                Longti = bestResult.getLongitude();
+
+
+                //현재 위치에서 목적지(위도, 경도)와 얼마나 떨어져 있는지 거리 계산
+                //getDistance(Lati, Longti);
+
+                Log.v("t1", String.valueOf(Lati));
+                Log.v("t1", String.valueOf(Longti));
+
+                // 그 위치로 지도를 줌레벨15로 옯겨주는 코드
+                LatLng Locations = new LatLng(Lati, Longti); // bestadress의 위도 경도를 LatLng에 저장한다.
+
+                MarkerOptions Restaurant = new MarkerOptions()
+                        .position(Locations)
+                        .title(Names);   // --> 저장한 LatLng 위치를 마크설정
+
+                //마커 표시
+                //mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
+                markers.add(Restaurant);
+
+            }
+        } catch (IOException e) {
+            Log.e(getClass().toString(), "Failed in using Geocoder.", e);
+            return;
+            }
+        }
+    }
+
     @SuppressWarnings("MissingPermission")
-    private void getLastLocation() {
+    private void getLastLocation() {  //현재 위치 얻는 함수
         Task task = mFusedLocationClient.getLastLocation();       // Task<Location> 객체 반환
         task.addOnSuccessListener(this, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
                 // Got last known location. In some rare situations this can be null.
                 if (location != null) {
+
                     mCurrentLocation = location;
-                    LatLng curLocation = new LatLng(mCurrentLocation.getLatitude(),
-                            mCurrentLocation.getLongitude());
+
+                    curLocation = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+
                     mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLocation,14));
                     //updateUI();
 
                     MarkerOptions mymarker = new MarkerOptions()
                                 .position(curLocation);   //마커위치
 
-
-                        // 반경 1KM원
-                        CircleOptions circle1KM = new CircleOptions().center(curLocation) //원점
-                                .radius(1500)      //반지름 단위 : m
-                                .strokeWidth(2f)  //선너비 0f : 선없음
-                                .fillColor(Color.parseColor("#00000000")); //배경색
-
                         //마커추가
                         mGoogleMap.addMarker(mymarker);
 
-                        //원추가
-                        mGoogleMap.addCircle(circle1KM);
-
+                        //마커 클릭됐을 때
                         mGoogleMap.setOnMarkerClickListener(new MyMarkerClickListener());
+
+
+                        ViewStores();
                 }
 
-                else{
 
+                else{
                     Toast.makeText(getApplicationContext(),
                             getString(R.string.no_location_detected),
                             Toast.LENGTH_SHORT)
@@ -193,17 +378,39 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     class MyMarkerClickListener implements GoogleMap.OnMarkerClickListener {
-
         @Override
         public boolean onMarkerClick(Marker marker) {
-//               AlertDialog.Builder atd = new AlertDialog.Builder(getApplication());
-//                    atd.setTitle("맛집등록");
-//                    atd.setMessage("맛집을 등록하시겠습니까?");
-//                    atd.setIcon(R.drawable.firework3);
-//                    atd.setPositiveButton("아니오", null);
-//                    atd.setNegativeButton("예", null);
-//                    atd.show();
-            show();
+            int count = 0;
+
+            stores = mapDBHelper.getAllUsersBySQL();
+            stores.moveToFirst();
+
+            while(stores.moveToNext()) {
+
+                String Name = stores.getString(1);
+                String input = stores.getString(2);
+
+                Log.v("Name", Name);// 잘나옴
+                Log.v("Input", input);// 잘나옴
+                Log.v("makertitle", marker.getTitle()); // 잘나옴
+
+                if (marker.getTitle().trim().equals(Name.trim())){
+                    count++;
+                }
+
+            }
+
+            Log.v("count", String.valueOf(count)); // 잘나옴
+                // 이부분 수정
+            if (count > 0){
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(intent);
+            }
+            else{
+                show();
+            }
+
+            //show();
             return false;
         }
     }
@@ -232,6 +439,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
+
+
+
     //카메라를 맨 처음 실행 하자마자 줌레벨15로 옮겨주는 코드
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -252,8 +462,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         EditText address = (EditText)findViewById(R.id.edit_text);
         String input = address.getText().toString();
         try {
-            Geocoder geocoder = new Geocoder(this, Locale.KOREA);
-            List<Address> addresses = geocoder.getFromLocationName(input,1);
+            // Geocoder --> 위치 좌표를 주소로, 주소를 위치 좌표로 변경하는데 사용됨
+            Geocoder geocoder = new Geocoder(this, Locale.KOREA); //
+            List<Address> addresses = geocoder.getFromLocationName(input,1); // 주소를 위치 좌표로
 
             // 주소를 위치로 반환해주는 코드
             if (addresses.size() >0) {
@@ -264,9 +475,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         bestResult.getLongitude()));
 
                 // 그 위치로 지도를 줌레벨15로 옯겨주는 코드
-                LatLng Location = new LatLng(bestResult.getLatitude(),
+                LatLng Location = new LatLng(bestResult.getLatitude(), // LatLng는 위도와 경도를 저장해서 위치를 지정하기 위해 사용하는 것
                         bestResult.getLongitude());
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location,14));
+                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location,14)); // 구글맵의 화면 위치 이동
 
                 //마커 표시(위치와 마커 클릭시정보창에 표시되는 문자열)
                 mGoogleMap.addMarker(

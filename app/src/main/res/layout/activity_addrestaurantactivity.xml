@@ -14,7 +14,8 @@
         <ImageButton
             android:id="@+id/imageButton"
             android:layout_width="130dp"
-            android:layout_height="match_parent"
+            android:layout_height="130dp"
+            android:scaleType="centerCrop"
             android:gravity="center"
             android:src="@drawable/takepicture" />
 
