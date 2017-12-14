@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity implements MainFragment.OnTi
         switch (item.getItemId()) {
             case R.id.goto_AddMenuActivity:
                 Intent intent = new Intent(getApplicationContext(), AddMenu.class);
+//                intent.putExtra("Names", "1");
                 startActivity(intent);
                 return true;
         }

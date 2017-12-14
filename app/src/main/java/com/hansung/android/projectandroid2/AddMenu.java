@@ -1,12 +1,14 @@
 package com.hansung.android.projectandroid2;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -34,7 +36,8 @@ public class AddMenu extends AppCompatActivity {
     EditText m_menu_explanation;
     ImageButton m_menu_Picture;
 
-    private DBHelper2 mDbHelper;
+    private MenuDB menuDbHelper;
+    private DBHelper3 mDbHelpers;
 
     Button menu_enrollmentBtn;
     @Override
@@ -49,7 +52,13 @@ public class AddMenu extends AppCompatActivity {
         m_menu_explanation = (EditText) findViewById(R.id.menu_explain);
         m_menu_Picture = (ImageButton) findViewById(R.id.imageButton);
 
-        mDbHelper = new DBHelper2(this);
+//       ;
+        menuDbHelper = new MenuDB(this);
+        mDbHelpers = new DBHelper3(this);
+
+
+
+//        mDbHelper.deleteUserByMethod2();
 
 
         m_menu_Picture.setOnClickListener(new View.OnClickListener() {
@@ -80,10 +89,20 @@ public class AddMenu extends AppCompatActivity {
         EditText menu_price = (EditText) findViewById(R.id.menu_price);
         EditText menu_explanation = (EditText) findViewById(R.id.menu_explain);
 
+        Cursor check = mDbHelpers.getAllUsersBySQL();
 
-        long nOfRows = mDbHelper.insertUserByMethod2(menu_name.getText().toString(), menu_price.getText().toString(), StoreImg, menu_explanation.getText().toString());
+        check.moveToLast();
+
+        String store_name = check.getString(1);
+        Log.v("testname", store_name);
+
+
+        long nOfRows = menuDbHelper.insertUserByMethod2(menu_name.getText().toString(), menu_price.getText().toString(), StoreImg, menu_explanation.getText().toString(), store_name);
         if (nOfRows > 0)
+        {
             Toast.makeText(this, "메뉴가 등록되었습니다.", Toast.LENGTH_SHORT).show();
+        }
+
         else
             Toast.makeText(this, "다시 입력해주세요.", Toast.LENGTH_SHORT).show();
     }

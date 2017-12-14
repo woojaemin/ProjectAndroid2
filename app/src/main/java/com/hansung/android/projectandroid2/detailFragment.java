@@ -17,7 +17,7 @@ import android.widget.TextView;
 
 public class detailFragment extends android.support.v4.app.Fragment {
 
-    public DBHelper2 mDbHelper2;
+    public MenuDB mDbHelper2;
 
     static int index = -1;
 
@@ -32,7 +32,7 @@ public class detailFragment extends android.support.v4.app.Fragment {
         //inflate layout for this fragment
         View view = inflater.inflate(R.layout.fragment_details, container, false);
 
-        mDbHelper2 = new DBHelper2(getActivity());
+        mDbHelper2 = new MenuDB(getActivity());
 
         Cursor df = mDbHelper2.getAllUsersByMethod();
 

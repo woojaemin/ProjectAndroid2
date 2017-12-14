@@ -29,6 +29,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -40,11 +41,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
     // 지도에 표시된 마커 객체를 가지고 있을 배열입니다
     ArrayList<MarkerOptions> markers = new ArrayList<MarkerOptions>();
+
+    int radious=1;
 
     public LatLng curLocation; // 현재 위치를 여기다 저장
 
@@ -56,6 +60,9 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     int rad = 1000;
 
     public DBHelper mapDBHelper;
+    public DBHelper3 mapDBHelpers;
+
+
     Cursor stores;
     final private int REQUEST_PERMISSIONS_FOR_LAST_KNOWN_LOCATION = 0;
 
@@ -65,16 +72,14 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         mapDBHelper = new DBHelper(this);
-
-        //Cursor stores = mapDBHelper.getAllUsersBySQL();
-
-
-
-//        test = stores.getString(1);
+//        mapDBHelper.deleteUserByMethod();
+        mapDBHelpers = new DBHelper3(this);
 //
-//        Log.v("test", test);
 
-        Log.v("test", "1");
+//        SQLiteDatabase db=mapDBHelpers.getReadableDatabase();
+
+//        Cursor stores = mapDBHelper.getAllUsersBySQL();
+
 
 
         //변수 설정
@@ -96,7 +101,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         Find.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mGoogleMap.clear();
                 getAddress();
+                ViewStores();
+
             }
         });
 
@@ -111,87 +119,68 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         return super.onCreateOptionsMenu(menu);
 
     }
-//로케이션 클래스에 디스턴스 메소드
 
-     //메뉴 선택 됐을 때
+
+     //메뉴 아이템
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        Location location;
-//        location.distanceTo()
+        Cursor distance = mapDBHelper.getAllUsersBySQL();
 
         switch (item.getItemId()) {
+
             case R.id.kilo_one:
                 mGoogleMap.clear();
                 item.setChecked(true);
-                test = "one";
                 rad = 1000;
-                getLastLocation(); // 현재 위치로
+                radious=2;
+//                getLastLocation(); // 현재 위치로
+
                 // 반경 1KM원
                 CircleOptions circle1KM = new CircleOptions().center(curLocation) //원점
                         .radius(1000)      //반지름 단위 : m
                         .strokeWidth(2f)  //선너비 0f : 선없음
                         .fillColor(Color.parseColor("#00000000")); //배경색
                 mGoogleMap.addCircle(circle1KM);
-                Log.v("test","1");
-
-
-                MarkerOptions mar1;
-                double x1, y1, dis1;
-                for (int m=0; m<markers.size(); m++){
-                    mar1 = markers.get(m);
-                    //markers.get(m)
-                    x1 = mar1.getPosition().latitude;
-                    y1 = mar1.getPosition().longitude;
-                    dis1 = Double.parseDouble(getDistance(x1, y1));
-                    Log.i("dis", String.valueOf(dis1));
-                    if (dis1 <= 1000){
-                        mGoogleMap.addMarker(mar1);
-                    }
-
-                    mar1 = null;
-                }
-
-
+                count(1000);
 
                break;
 
+
             case R.id.kilo_two:
+
                 mGoogleMap.clear();
                 item.setChecked(true);
                 test="two";
                 rad = 2000;
                 //getLastLocation(2);
-                getLastLocation(); // 현재 위치로
-                // 반경 1KM원
+//                getLastLocation(); // 현재 위치로
+                // 반경 2KM원
                 CircleOptions circle2KM = new CircleOptions().center(curLocation) //원점
                         .radius(2000)      //반지름 단위 : m
                         .strokeWidth(2f)  //선너비 0f : 선없음
                         .fillColor(Color.parseColor("#00000000")); //배경색
                 mGoogleMap.addCircle(circle2KM);
-
-
-
-
-                MarkerOptions mar2;
-                double x2, y2, dis2;
-                for (int m=0; m<markers.size(); m++){
-                    mar2 = markers.get(m);
-                    //markers.get(m)
-                    x2 = mar2.getPosition().latitude;
-                    y2 = mar2.getPosition().longitude;
-                    dis2 = Double.parseDouble(getDistance(x2, y2));
-                    Log.i("dis", String.valueOf(dis2));
-
-                    if (dis2 <= 2000){
-                        mGoogleMap.addMarker(mar2);
-                    }
-
-                    mar2 = null;
-                }
-
-
-
-
+                count(2000);
+//
+//
+//
+//                MarkerOptions mar2;
+//                double x2, y2, dis2;
+//                for (int m=0; m<markers.size(); m++){
+//                    mar2 = markers.get(m);
+//                    //markers.get(m)
+//                    x2 = mar2.getPosition().latitude;
+//                    y2 = mar2.getPosition().longitude;
+//                    dis2 = Double.parseDouble(getDistance(x2, y2));
+//                    Log.i("dis", String.valueOf(dis2));
+//
+//                    if (dis2 <= 2000){
+//                        mGoogleMap.addMarker(mar2);
+//                    }
+//
+//                    mar2 = null;
+//                }
+//
                 break;
 
             case R.id.kilo_three:
@@ -200,39 +189,44 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 test="three";
                 rad = 3000;
                 //getLastLocation(3);
-                getLastLocation();
-                // 반경 1KM원
+//                getLastLocation();
+                // 반경 3KM원
                 CircleOptions circle3KM = new CircleOptions().center(curLocation) //원점
                         .radius(3000)      //반지름 단위 : m
                         .strokeWidth(2f)  //선너비 0f : 선없음
                         .fillColor(Color.parseColor("#00000000")); //배경색
                 mGoogleMap.addCircle(circle3KM);
 
+                count(3000);
 
-                MarkerOptions mar3;
-                double x3, y3, dis3;
-                for (int m=0; m<markers.size(); m++){
-                    mar3 = markers.get(m);
-                    //markers.get(m)
-                    x3 = mar3.getPosition().latitude;
-                    y3 = mar3.getPosition().longitude;
-                    dis3 = Double.parseDouble(getDistance(x3, y3));
-                    Log.i("dis", String.valueOf(dis3));
-                    if (dis3 <= 3000){
-                        mGoogleMap.addMarker(mar3);
-                    }
 
-                    mar3 = null;
-                }
+//                MarkerOptions mar3;
+//                double x3, y3, dis3;
+//                for (int m=0; m<markers.size(); m++){
+//                    mar3 = markers.get(m);
+//                    //markers.get(m)
+//                    x3 = mar3.getPosition().latitude;
+//                    y3 = mar3.getPosition().longitude;
+//                    dis3 = Double.parseDouble(getDistance(x3, y3));
+//                    Log.i("dis", String.valueOf(dis3));
+//                    if (dis3 <= 3000){
+//                        mGoogleMap.addMarker(mar3);
+//                    }
+//
+//                    mar3 = null;
+//                }
 
 
 
                 break;
 
             case R.id.action_icon:
-                //getLastLocation(0);
+                mGoogleMap.clear();
                 getLastLocation();
+
                 break;
+
+
         }
         return false;
 
@@ -322,11 +316,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 MarkerOptions Restaurant = new MarkerOptions()
                         .position(Locations)
-                        .title(Names);   // --> 저장한 LatLng 위치를 마크설정
+                        .title(Names)
+                        .alpha(0.9f)
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
 
                 //마커 표시
-                //mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
-                markers.add(Restaurant);
+                mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
+//                markers.add(Restaurant);
 
             }
         } catch (IOException e) {
@@ -335,6 +331,82 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         }
     }
+
+    public void count(int num) {
+
+        stores = mapDBHelper.getAllUsersBySQL();
+
+        stores.moveToFirst();
+
+        while(stores.moveToNext()) {
+
+            String Names = stores.getString(1);
+            String input = stores.getString(2);
+
+            double Lati;
+            double Longti;
+
+            try {
+                Geocoder geocoder = new Geocoder(this, Locale.KOREA); // 주소를 위치로, 위치를 주소로 반환해주기 위해 사용
+                List<Address> addresses = geocoder.getFromLocationName(input, 1);
+
+                if (addresses.size() > 0) {
+                    Address bestResult = (Address) addresses.get(0);
+
+                    Lati = bestResult.getLatitude();
+                    Longti = bestResult.getLongitude();
+
+                    double dis = Double.parseDouble(getDistance(Lati, Longti));
+
+                    LatLng Locations = new LatLng(Lati, Longti);
+                    LatLng Mine = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
+                    MarkerOptions Current = new MarkerOptions()
+                            .position(Mine)
+                            .title("현재 위치");   // --> 저장한 LatLng 위치를 마크설정
+
+                    if( num >= dis && num==1000){
+
+                        MarkerOptions Restaurant = new MarkerOptions()
+                                .position(Locations)
+                                .title(Names)
+                                .alpha(0.9f)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
+
+                        //마커 표시
+                        mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
+                        mGoogleMap.addMarker(Current);
+                    }
+                    else if( num >= dis && num==2000){
+                        MarkerOptions Restaurant = new MarkerOptions()
+                                .position(Locations)
+                                .title(Names)
+                                .alpha(0.9f)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
+                        //마커 표시
+                        mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
+                        mGoogleMap.addMarker(Current);
+                        Log.v("test1", "2000>dis");
+                    }
+                    else if( num >= dis && num==3000){
+                        MarkerOptions Restaurant = new MarkerOptions()
+                                .position(Locations)
+                                .title(Names)
+                                .alpha(0.9f)
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
+                        //마커 표시
+                        mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
+                        mGoogleMap.addMarker(Current);
+                        Log.v("test1", "3000>dis");
+                    }
+
+                }
+            } catch (IOException e) {
+                Log.e(getClass().toString(), "Failed in using Geocoder.", e);
+                return;
+            }
+        }
+    }
+
 
     @SuppressWarnings("MissingPermission")
     private void getLastLocation() {  //현재 위치 얻는 함수
@@ -383,19 +455,27 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             int count = 0;
 
             stores = mapDBHelper.getAllUsersBySQL();
+
+
             stores.moveToFirst();
 
             while(stores.moveToNext()) {
 
+                String Store = stores.getString(0);
                 String Name = stores.getString(1);
                 String input = stores.getString(2);
+                Log.v("tests", Name);
 
-                Log.v("Name", Name);// 잘나옴
-                Log.v("Input", input);// 잘나옴
-                Log.v("makertitle", marker.getTitle()); // 잘나옴
+//                Log.v("Name", Name);// 잘나옴
+//                Log.v("Input", input);// 잘나옴
+//                Log.v("makertitle", marker.getTitle()); // 잘나옴
 
-                if (marker.getTitle().trim().equals(Name.trim())){
+                if(Objects.equals(marker.getTitle(), Name))
+                {
                     count++;
+                    Log.v("testset", Name);
+                    mapDBHelpers.insertUserByMethod(Name, input);
+
                 }
 
             }
@@ -403,6 +483,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
             Log.v("count", String.valueOf(count)); // 잘나옴
                 // 이부분 수정
             if (count > 0){
+
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
             }

@@ -25,6 +25,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.execSQL(UserContract.Users.CREATE_TABLE);
     }
 
+
     @Override
     public void onUpgrade(SQLiteDatabase db, int i, int i1) {
         Log.i(TAG, getClass().getName() + ".onUpgrade()");
@@ -45,6 +46,11 @@ public class DBHelper extends SQLiteOpenHelper {
     public Cursor getAllUsersBySQL() {
         String sql = "Select * FROM " + UserContract.Users.TABLE_NAME;
         return getReadableDatabase().rawQuery(sql, null);
+    }
+
+    public long deleteUserByMethod() {
+        SQLiteDatabase db = getWritableDatabase();
+        return db.delete(UserContract.Users.TABLE_NAME, null, null);
     }
 }
 

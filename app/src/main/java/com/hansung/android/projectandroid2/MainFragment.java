@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 
+import java.util.Objects;
+
 /**
  * Created by jhim0 on 2017-11-18.
  */
@@ -32,7 +34,8 @@ public class MainFragment extends Fragment {
 
     }
     public DBHelper mDbHelper;
-    public DBHelper2 mDbHelper2;
+    public DBHelper3 mDbHelper3;
+    public MenuDB mDbHelper2;
 
     final int REQUEST_CODE_READ_CONTACTS = 1;
 
@@ -50,6 +53,7 @@ public class MainFragment extends Fragment {
         menu_explain = (EditText)rootView.findViewById(R.id.menu_explain);
 
         mDbHelper = new DBHelper(getActivity());
+        mDbHelper3 = new DBHelper3(getActivity());
 
         TextView txv1 = (TextView) rootView.findViewById(R.id.mainTextView);
         TextView txv2 = (TextView) rootView.findViewById(R.id.addTextView1);
@@ -58,28 +62,37 @@ public class MainFragment extends Fragment {
 
         Cursor cursor = mDbHelper.getAllUsersBySQL();
 
-
-        cursor.moveToLast();
-
-        txv1.setText(cursor.getString(1));
-        txv2.setText(cursor.getString(2));
-        txv3.setText(cursor.getString(3));
-
-        Uri img = Uri.parse("file://"+cursor.getString(4));
-        imv1.setImageURI(img);
+        Cursor Storename = mDbHelper3.getAllUsersBySQL();
 
 
-        mDbHelper2 = new DBHelper2(getActivity());
+        cursor.moveToFirst();
+        Storename.moveToLast();
+//        Log.v("testname", Storename.getString(1));
+
+        while(cursor.moveToNext()) {
+            if(Objects.equals(cursor.getString(1), Storename.getString(1))) {
+
+
+                txv1.setText(cursor.getString(1));
+                txv2.setText(cursor.getString(2));
+                txv3.setText(cursor.getString(3));
+
+                Uri img = Uri.parse("file://" + cursor.getString(4));
+                imv1.setImageURI(img);
+            }
+
+        }
+        mDbHelper2 = new MenuDB(getActivity());
         Cursor cursor2 = mDbHelper2.getAllUsersByMethod();
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                 getActivity(),
                 R.layout.list_item,
                 cursor2, new String[]{
-                UserContract2.Users.KEY_MENU_NAME,
-                UserContract2.Users.KEY_MENU_PRICE,
-                UserContract2.Users.KEY_PICTURE,
-                UserContract2.Users.KEY_MENU_EXPLANATION},
+                Menus.Choice.KEY_MENU_NAME,
+                Menus.Choice.KEY_MENU_PRICE,
+                Menus.Choice.KEY_PICTURE,
+                Menus.Choice.KEY_MENU_EXPLANATION},
                 new int[]{R.id.textView1, R.id.textView2, R.id.imageView},
                 0
         );

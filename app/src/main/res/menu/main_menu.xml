@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/goto_AddMenuActivity"
-        android:title="menu erollment"
+        android:title="메뉴 등록하기"
         android:icon="@drawable/ic_add_black_24dp"
         />
 

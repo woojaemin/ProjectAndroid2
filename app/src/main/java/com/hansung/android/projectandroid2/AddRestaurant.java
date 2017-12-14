@@ -24,7 +24,7 @@ import java.util.Date;
 public class AddRestaurant extends AppCompatActivity{
 
     public DBHelper mDBHelper;
-    public DBHelper2 mDBHelpers;
+    public MenuDB mDBHelpers;
 
     String StoreImg;
 
@@ -37,8 +37,6 @@ public class AddRestaurant extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_addrestaurantactivity);
 
-        mDBHelpers = new DBHelper2(this);
-//        mDBHelpers.deleteUserByMethod2();
 
         //외부 저장소 권한 사용 Permission
         checkDangerousPermissions();
