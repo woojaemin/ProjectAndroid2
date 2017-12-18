@@ -3,6 +3,7 @@ package com.hansung.android.projectandroid2;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
@@ -12,6 +13,7 @@ import android.util.Log;
 
 public class DBHelper3 extends SQLiteOpenHelper {
 
+    final static String TAG = "GBHouse";
 
     public DBHelper3(Context context) {
         super(context, stores.DB_NAME, null, UserContract.DATABASE_VERSION);
@@ -19,6 +21,7 @@ public class DBHelper3 extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
+        Log.i(TAG, getClass().getName() + ".onCreate()");
         db.execSQL(stores.store.CREATE_TABLE);
     }
 

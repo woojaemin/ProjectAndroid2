@@ -542,7 +542,20 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         TextView mResultText = (TextView) findViewById(R.id.result);
         EditText address = (EditText)findViewById(R.id.edit_text);
         String input = address.getText().toString();
+        int check = 1;
         try {
+
+            //위에 선언해주었던 Cursor stores를 처음으로 이동시킴
+            stores.moveToFirst();
+
+            // Cursor를 이동시키면서 검색결과와 등록된 가게의 이름과 동일하면 input값을 가게의 주소로 바꿔줌
+            while(stores.moveToNext()){
+                if (Objects.equals(stores.getString(1), address.getText().toString())){
+                    input = stores.getString(2);
+                    check = 0;
+                }
+            }
+
             // Geocoder --> 위치 좌표를 주소로, 주소를 위치 좌표로 변경하는데 사용됨
             Geocoder geocoder = new Geocoder(this, Locale.KOREA); //
             List<Address> addresses = geocoder.getFromLocationName(input,1); // 주소를 위치 좌표로
@@ -560,11 +573,13 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         bestResult.getLongitude());
                 mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location,14)); // 구글맵의 화면 위치 이동
 
-                //마커 표시(위치와 마커 클릭시정보창에 표시되는 문자열)
-                mGoogleMap.addMarker(
-                        new MarkerOptions().
-                                position(Location).
-                                title(input));
+                // 위에서 가게의 이름으로 검색한 경우 마커 추가하는 것은 생략
+                if(check != 0) {
+                    mGoogleMap.addMarker(
+                            new MarkerOptions().
+                                    position(Location).
+                                    title(input));
+                }
             }
         } catch (IOException e) {
             Log.e(getClass().toString(),"Failed in using Geocoder.", e);
