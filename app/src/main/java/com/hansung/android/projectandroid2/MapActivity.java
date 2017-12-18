@@ -318,8 +318,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         .position(Locations)
                         .title(Names)
                         .alpha(0.9f)
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
-
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));// --> 저장한 LatLng 위치를 마크설정
                 //마커 표시
                 mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
 //                markers.add(Restaurant);
@@ -364,6 +363,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                             .position(Mine)
                             .title("현재 위치");   // --> 저장한 LatLng 위치를 마크설정
 
+                    //거리가 1km 이하 일때
                     if( num >= dis && num==1000){
 
                         MarkerOptions Restaurant = new MarkerOptions()
@@ -376,6 +376,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
                         mGoogleMap.addMarker(Current);
                     }
+
+                    //거리가 2km 이하 일때
                     else if( num >= dis && num==2000){
                         MarkerOptions Restaurant = new MarkerOptions()
                                 .position(Locations)
@@ -387,6 +389,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mGoogleMap.addMarker(Current);
                         Log.v("test1", "2000>dis");
                     }
+
+                    //거리가 3km 이하 일때
                     else if( num >= dis && num==3000){
                         MarkerOptions Restaurant = new MarkerOptions()
                                 .position(Locations)
@@ -421,7 +425,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     curLocation = new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude());
 
-                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLocation,14));
+                    mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(curLocation,15));
                     //updateUI();
 
                     MarkerOptions mymarker = new MarkerOptions()
@@ -571,7 +575,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 // 그 위치로 지도를 줌레벨15로 옯겨주는 코드
                 LatLng Location = new LatLng(bestResult.getLatitude(), // LatLng는 위도와 경도를 저장해서 위치를 지정하기 위해 사용하는 것
                         bestResult.getLongitude());
-                mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location,14)); // 구글맵의 화면 위치 이동
+                mGoogleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(Location,15)); // 구글맵의 화면 위치 이동
 
                 // 위에서 가게의 이름으로 검색한 경우 마커 추가하는 것은 생략
                 if(check != 0) {
