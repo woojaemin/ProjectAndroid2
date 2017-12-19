@@ -370,7 +370,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 .position(Locations)
                                 .title(Names)
                                 .alpha(0.9f)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));// --> 저장한 LatLng 위치를 마크설정
 
                         //마커 표시
                         mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
@@ -383,7 +383,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 .position(Locations)
                                 .title(Names)
                                 .alpha(0.9f)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));// --> 저장한 LatLng 위치를 마크설정
                         //마커 표시
                         mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
                         mGoogleMap.addMarker(Current);
@@ -396,7 +396,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                                 .position(Locations)
                                 .title(Names)
                                 .alpha(0.9f)
-                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.mat));// --> 저장한 LatLng 위치를 마크설정
+                                .icon(BitmapDescriptorFactory.fromResource(R.drawable.green));// --> 저장한 LatLng 위치를 마크설정
                         //마커 표시
                         mGoogleMap.addMarker(Restaurant);   // 설정한 마크를 구글맵에 찍어준다.
                         mGoogleMap.addMarker(Current);
