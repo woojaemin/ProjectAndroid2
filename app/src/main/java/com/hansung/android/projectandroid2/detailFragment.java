@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +51,12 @@ public class detailFragment extends android.support.v4.app.Fragment {
         tv2.setText(df.getString(2));
 
         ImageView img = (ImageView)view.findViewById(R.id.image1);
+
          if(df.getString(3)!= null) {
+             Log.v("tests", df.getString(3));
         img.setImageURI(Uri.parse(df.getString(3)));
          }
+
         TextView tv3 = (TextView)view.findViewById(R.id.Text3);
         tv3.setText(df.getString(4));
 

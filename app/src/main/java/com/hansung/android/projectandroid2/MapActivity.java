@@ -404,7 +404,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                     }
 
                 }
-            } catch (IOException e) {
+            }
+            catch (IOException e) {
                 Log.e(getClass().toString(), "Failed in using Geocoder.", e);
                 return;
             }
