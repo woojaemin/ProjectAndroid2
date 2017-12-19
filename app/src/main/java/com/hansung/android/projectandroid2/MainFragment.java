@@ -67,7 +67,7 @@ public class MainFragment extends Fragment {
 
         cursor.moveToFirst();
         Storename.moveToLast();
-//        Log.v("testname", Storename.getString(1));
+
 
         while(cursor.moveToNext()) {
             if(Objects.equals(cursor.getString(1), Storename.getString(1))) {

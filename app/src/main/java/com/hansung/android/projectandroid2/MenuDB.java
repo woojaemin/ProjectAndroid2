@@ -44,11 +44,7 @@ public class MenuDB extends SQLiteOpenHelper{
 
         return db.insert(Menus.Choice.TABLE_NAME2, null, values);
     }
-//
-//    public Cursor getAllUsersBySQL() {
-//        String sql = "Select * FROM " + Menus.Choice.TABLE_NAME2;
-//        return getReadableDatabase().rawQuery(sql, null);
-//    }
+
 
     public Cursor getAllUsersByMethod() {
         SQLiteDatabase db = getReadableDatabase();

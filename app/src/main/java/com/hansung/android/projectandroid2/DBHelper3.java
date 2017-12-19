@@ -46,8 +46,4 @@ public class DBHelper3 extends SQLiteOpenHelper {
         return getReadableDatabase().rawQuery(sql, null);
     }
 
-    public long deleteUserByMethod3() {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(stores.store.TABLE_NAMES, null, null);
-    }
 }

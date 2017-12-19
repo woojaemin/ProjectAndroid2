@@ -34,9 +34,6 @@ public class anim extends AppCompatActivity{
         mScreenHeight = displaymetrics.heightPixels;
 
         startFireTweenAnimation();
-//
-//        Intent maps = new Intent(getApplicationContext() , MapActivity.class);
-//        startActivity(maps);
 
     }
 

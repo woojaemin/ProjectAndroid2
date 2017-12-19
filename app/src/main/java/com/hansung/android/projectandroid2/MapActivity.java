@@ -72,14 +72,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_maps);
 
         mapDBHelper = new DBHelper(this);
-//        mapDBHelper.deleteUserByMethod();
         mapDBHelpers = new DBHelper3(this);
-//
-
-//        SQLiteDatabase db=mapDBHelpers.getReadableDatabase();
-
-//        Cursor stores = mapDBHelper.getAllUsersBySQL();
-
 
 
         //변수 설정
@@ -161,26 +154,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         .fillColor(Color.parseColor("#00000000")); //배경색
                 mGoogleMap.addCircle(circle2KM);
                 count(2000);
-//
-//
-//
-//                MarkerOptions mar2;
-//                double x2, y2, dis2;
-//                for (int m=0; m<markers.size(); m++){
-//                    mar2 = markers.get(m);
-//                    //markers.get(m)
-//                    x2 = mar2.getPosition().latitude;
-//                    y2 = mar2.getPosition().longitude;
-//                    dis2 = Double.parseDouble(getDistance(x2, y2));
-//                    Log.i("dis", String.valueOf(dis2));
-//
-//                    if (dis2 <= 2000){
-//                        mGoogleMap.addMarker(mar2);
-//                    }
-//
-//                    mar2 = null;
-//                }
-//
+
                 break;
 
             case R.id.kilo_three:
@@ -198,25 +172,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 mGoogleMap.addCircle(circle3KM);
 
                 count(3000);
-
-
-//                MarkerOptions mar3;
-//                double x3, y3, dis3;
-//                for (int m=0; m<markers.size(); m++){
-//                    mar3 = markers.get(m);
-//                    //markers.get(m)
-//                    x3 = mar3.getPosition().latitude;
-//                    y3 = mar3.getPosition().longitude;
-//                    dis3 = Double.parseDouble(getDistance(x3, y3));
-//                    Log.i("dis", String.valueOf(dis3));
-//                    if (dis3 <= 3000){
-//                        mGoogleMap.addMarker(mar3);
-//                    }
-//
-//                    mar3 = null;
-//                }
-
-
 
                 break;
 
@@ -303,10 +258,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 Lati = bestResult.getLatitude();
                 Longti = bestResult.getLongitude();
-
-
-                //현재 위치에서 목적지(위도, 경도)와 얼마나 떨어져 있는지 거리 계산
-                //getDistance(Lati, Longti);
 
                 Log.v("t1", String.valueOf(Lati));
                 Log.v("t1", String.valueOf(Longti));
@@ -471,10 +422,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                 String input = stores.getString(2);
                 Log.v("tests", Name);
 
-//                Log.v("Name", Name);// 잘나옴
-//                Log.v("Input", input);// 잘나옴
-//                Log.v("makertitle", marker.getTitle()); // 잘나옴
-
                 if(Objects.equals(marker.getTitle(), Name))
                 {
                     count++;
@@ -532,12 +479,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-//        if(mCurrentLocation != null){
-//                      LatLng Location = new LatLng(mCurrentLocation.getLatitude(),
-//                                    mCurrentLocation.getAltitude());
-//        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(Location,15));
-//        }
-
 
     }
 
