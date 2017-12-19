@@ -44,20 +44,24 @@ public class MenuDB extends SQLiteOpenHelper{
 
         return db.insert(Menus.Choice.TABLE_NAME2, null, values);
     }
-
-    public Cursor getAllUsersBySQL() {
-        String sql = "Select * FROM " + Menus.Choice.TABLE_NAME2;
-        return getReadableDatabase().rawQuery(sql, null);
-    }
+//
+//    public Cursor getAllUsersBySQL() {
+//        String sql = "Select * FROM " + Menus.Choice.TABLE_NAME2;
+//        return getReadableDatabase().rawQuery(sql, null);
+//    }
 
     public Cursor getAllUsersByMethod() {
         SQLiteDatabase db = getReadableDatabase();
         return db.query(Menus.Choice.TABLE_NAME2, null, null, null, null, null, null);
     }
 
-    public long deleteUserByMethod2() {
-        SQLiteDatabase db = getWritableDatabase();
-        return db.delete(Menus.Choice.TABLE_NAME2, null, null);
+    public Cursor getMenusByMethod(String _id) {
+        SQLiteDatabase db = getReadableDatabase();
+
+        String whereClause = Menus.Choice.KEY_STORE +" = ?";
+        String[] whereArgs ={_id};
+
+       return db.query(Menus.Choice.TABLE_NAME2,null,whereClause,whereArgs,null,null,null);
     }
 
 }

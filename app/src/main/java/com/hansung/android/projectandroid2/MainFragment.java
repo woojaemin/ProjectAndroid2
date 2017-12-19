@@ -83,12 +83,22 @@ public class MainFragment extends Fragment {
 
         }
         mDbHelper2 = new MenuDB(getActivity());
-        Cursor cursor2 = mDbHelper2.getAllUsersByMethod();
+
+
+        Cursor stores = mDbHelper3.getAllUsersBySQL();
+
+        // 선택된 맛집의 이름을 불러옴
+        stores.moveToLast();
+
+        String name = stores.getString(1);
+
+        // 맛집의 이름을 인자로 넘겨서 해당 이름을 포함하는 메뉴만 출력하도록 설정
+        Cursor select = mDbHelper2.getMenusByMethod(name);
 
         SimpleCursorAdapter adapter = new SimpleCursorAdapter(
                 getActivity(),
                 R.layout.list_item,
-                cursor2, new String[]{
+                select, new String[]{
                 Menus.Choice.KEY_MENU_NAME,
                 Menus.Choice.KEY_MENU_PRICE,
                 Menus.Choice.KEY_PICTURE,
